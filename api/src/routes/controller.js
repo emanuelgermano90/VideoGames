@@ -4,12 +4,36 @@ const { API_KEY } = process.env;
 
 const getVideogame = (req, res, next) => { 
 
-    axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
+    const { name } = req.query;
+
+    if(name) {
+
+        axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}`)
+        .then(game => {
+
+            let listGame = [];
+
+            for (let i = 0; i < 15; i++) {
+
+                const element = game.data.results[i];
+
+                listGame.push(element)
+                
+            }
+
+            res.status(200).send(listGame);
+
+        })
+        .catch(err => res.status(401).send({data: err}))
+
+    } else {
+
+        axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
         .then(obj => {
 
-            const results = obj.data.results;
+            let results = obj.data.results;
 
-            const resFil = results.map(ele => {
+            let resFil = results.map(ele => {
 
                 let genresOb = ele.genres.map(genres => genres.name);
 
@@ -36,11 +60,9 @@ const getVideogame = (req, res, next) => {
         })
         .catch(err => res.status(401).send({data: err}))
 
-};
+    }
 
-const getVideogameName = (req, res, next) => {
-
-    res.status(200).send({data: 'recibido'})
+    
 
 };
 
@@ -53,7 +75,6 @@ const postVideogame = (req, res, next) => {};
 module.exports = {
 
     getVideogame,
-    getVideogameName,
     getVideogameId,
     getGenres,
     postVideogame

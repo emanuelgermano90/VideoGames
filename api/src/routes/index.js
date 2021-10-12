@@ -13,13 +13,7 @@ const router = Router();
 
 // router.get('/', (req, res, next) => { res.status(200).send({data: 'hola'}) })
 
-// router.get('/videogames', getVideogame);
-
-router.get('/videogames?name', (req, res) => {
-
-    res.status(200).send({data: 'recibido'})
-
-});
+router.get('/videogames', getVideogame);
 
 // router.get('/videogame/{idVideogame}', getVideogameId);
 
