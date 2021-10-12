@@ -13,6 +13,10 @@ const getVideogame = (req, res, next) => {
 
             let listGame = [];
 
+            console.log(game.data.results.length);
+
+            if(game.data.results.length === 0) res.status(404).send({data: 'video game not found'});
+
             for (let i = 0; i < 15; i++) {
 
                 const element = game.data.results[i];
