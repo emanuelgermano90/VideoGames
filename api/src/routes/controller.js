@@ -15,7 +15,7 @@ const getVideogame = (req, res, next) => {
 
             console.log(game.data.results.length);
 
-            if(game.data.results.length === 0) res.status(404).send({data: 'video game not found'});
+            if(game.data.results.length === 0) res.status(404).send({data: 'video game not found'}); // si el length es 0 es porque no existe ese nombre
 
             for (let i = 0; i < 15; i++) {
 
@@ -70,7 +70,37 @@ const getVideogame = (req, res, next) => {
 
 };
 
-const getVideogameId = (req, res, next) => {};
+const getVideogameId = (req, res, next) => {
+
+    const { idVideogame } = req.params;
+
+    axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
+        .then(games => {
+
+            let results = games.data.results;
+
+            let resFil = results.filter(ele => ele.id == idVideogame);
+
+            let genresOb = resFil[0].genres.map(genres => genres.name);
+
+            let platOb = resFil[0].platforms.map(plat => plat.platform.name);
+
+            res.status(200).send({  
+                
+                id: resFil[0].id,
+                name: resFil[0].name,
+                genres: genresOb,
+                image: resFil[0].background_image,
+                releaseDate: resFil[0].released,
+                rating: resFil[0].rating,
+                plataform: platOb,
+
+            });
+
+        })
+        .catch(err => res.status(401).send({data: err}))
+
+};
 
 const getGenres = (req, res, next) => {};
 
