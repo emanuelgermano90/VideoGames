@@ -15,9 +15,9 @@ router.get('/videogames', getVideogame);
 
 router.get('/videogame/:idVideogame', getVideogameId);
 
-// router.get('/genres', getGenres);
+router.get('/genres', getGenres);
 
-// router.post('/videogame', postVideogame);
+router.post('/videogame', postVideogame);
 
 
 module.exports = router;
