@@ -42,6 +42,7 @@ const getVideogame = async (req, res, next) => {
                 
                 return {
                     
+                    id: ele.id,
                     name: ele.name,
                     image: ele.background_image,
                     genres: genresOb,

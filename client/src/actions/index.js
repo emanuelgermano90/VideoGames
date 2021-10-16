@@ -9,7 +9,7 @@ export function getListVideogames(){
         return await axios(`http://localhost:3001/videogames`)
                         .then(respuesta => dispatch({
 
-                            type: 'GET_GAMES',
+                            type: GET_GAMES,
                             payload: respuesta.data
 
                         }));

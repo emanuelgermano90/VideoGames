@@ -6,7 +6,12 @@ export default function SearchBar() {
 
         <div>
 
-            <h1>SearchBar!!</h1>
+            <form>
+
+                <input type='text' placeholder='Video Juego...' />
+                <input type='submit' value='Buscar' />
+
+            </form>
 
         </div>
 

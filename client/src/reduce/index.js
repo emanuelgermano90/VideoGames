@@ -1,4 +1,4 @@
-// import { GET_GAMES } from '../actions'
+import { GET_GAMES } from '../actions'
 
 const initialState = {
 
@@ -9,7 +9,7 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
 
     switch (action.type) {
-        case 'GET_GAMES':
+        case GET_GAMES:
             
             return {
 
@@ -19,7 +19,7 @@ const rootReducer = (state = initialState, action) => {
             }
     
         default:
-            break;
+            return state;
     }
 
 }
