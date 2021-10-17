@@ -8,11 +8,11 @@ export default function LandingPage(){
 
         <div className='landingVG'>
 
-            <h1>Bienvenido al Home</h1>
+            <h1>Bienvenidos</h1>
 
             <Link to='/home'>
 
-                <button>Ingresar al Home</button>
+                <button className='butLanding'>Ingresar</button>
 
             </Link>
 

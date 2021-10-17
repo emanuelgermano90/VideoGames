@@ -1,4 +1,5 @@
 import React from "react";
+import './SearchBar.css';
 
 export default function SearchBar() {
 
@@ -8,8 +9,8 @@ export default function SearchBar() {
 
             <form>
 
-                <input type='text' placeholder='Video Juego...' />
-                <input type='submit' value='Buscar' />
+                <input className='label' type='text' placeholder='Video Juego...' />
+                <input className='button' type='submit' value='Buscar' />
 
             </form>
 

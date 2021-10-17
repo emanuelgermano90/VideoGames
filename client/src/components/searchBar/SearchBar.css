@@ -1,0 +1,42 @@
+.label {
+
+    background: rgba(0, 0, 0, 0.5);
+    width: 400px;
+    height: 30px;
+    border: 1px solid rgb(163, 4, 4);
+    color: white;
+    border-radius: 20px;
+    margin: 20px 50px;
+    padding: 3px 15px;
+
+}
+
+.label:focus {
+
+    border: 1px solid red;
+    outline: none;
+
+}
+
+.label::placeholder {
+
+    color: rgb(175, 175, 175);
+
+}
+
+.button {
+
+    width: 150px;
+    height: 35px;
+    background: rgba(112, 3, 3, 0.8);
+    color: white;
+    font-weight: 600;
+    border: 1px solid red;
+
+}
+
+.button:hover {
+
+    background: rgba(194, 2, 2, 0.8);
+
+}

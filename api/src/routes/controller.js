@@ -31,29 +31,36 @@ const getVideogame = async (req, res, next) => {
 
     } else {
         // obtener imagen nombre generos
-        await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
-        .then(obj => {
+        
+        let allGames = [];
 
-            let results = obj.data.results;
+        for (let i = 1; i <= 5; i++) {
 
-            let resFil = results.map(ele => {
+            await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`)
+                .then(obj => {
 
-                let genresOb = ele.genres.map(genres => genres.name);
-                
-                return {
+                    let results = obj.data.results;
+
+                    results.forEach(ele => {
+
+                        let genresOb = ele.genres.map(genres => genres.name);
+                        
+                        allGames.push({
                     
-                    id: ele.id,
-                    name: ele.name,
-                    image: ele.background_image,
-                    genres: genresOb,
-                }
+                            id: ele.id,
+                            name: ele.name,
+                            image: ele.background_image,
+                            genres: genresOb,
+                        })
+                    
+                    })
+
+                })
+                .catch(err => res.status(401).send({data: err}))
             
-            })
-
-            return res.status(200).send(resFil);
-
-        })
-        .catch(err => res.status(401).send({data: err}))
+        }
+        
+        return res.status(200).send(allGames);
 
     }
 
@@ -92,7 +99,7 @@ const getVideogameId = async (req, res, next) => {
 };
 
 const getGenres = async (req, res, next) => {
-
+    
     await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
         .then(async (gen) => {
 

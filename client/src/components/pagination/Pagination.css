@@ -1,0 +1,26 @@
+.pagination {
+
+    
+
+}
+
+.numPagination {
+
+    width: 40px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    display:inline-block;
+    border: 1px solid red;
+    border-radius: 10px;
+    margin: 0 10px;
+    padding: 4px 0 0 0;
+
+}
+
+.numPagination:hover {
+
+    background: rgba(141, 2, 2, 0.85);
+    cursor: pointer;
+
+}

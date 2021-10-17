@@ -3,24 +3,25 @@ h1 {
     color: white;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 300%;
-    text-shadow: 0 0 15px #0000FF, 0 0 15px #0000FF;
+    /* text-shadow: 0 0 20px #d47f1e, 0 0 20px #d47f1e; */
+    text-shadow: 0 0 20px #880808, 0 0 20px #880808;
 
 }
 
-button {
+.butLanding {
 
-    background: linear-gradient(#111, #999);
+    background: rgba(112, 3, 3, 0.6);
     color: white;
-    width: 15em;
-    height: 3em;
-    border: black 1px solid;
+    width: 300px;
+    height: 50px;
+    border: 1px solid red;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 20px;
 
 }
 
-button:hover {
+.butLanding:hover {
 
-    background: linear-gradient(#999, #111);
+    background: rgba(194, 2, 2, 0.8);
     
 }

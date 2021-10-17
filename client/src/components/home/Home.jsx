@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getListVideogames } from '../../actions';
+import { getListVideogames, getGamesId } from '../../actions';
 import { Link } from "react-router-dom";
 import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
+import Paginado from "../pagination/Pagination";
 import './Home.css';
 // imput de busqueda para videojuegos por nombre
 // area para el listado de videojuegos (imagen, nombre, generos)
@@ -15,6 +16,20 @@ export default function Home() {
 
     const dispatch = useDispatch();
     const allVideoGames = useSelector(state => state.videogames);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [videogameForPage, setVideogameForPage] = useState(15);
+    const lastVideogameIndex = currentPage * videogameForPage;
+    const firstVideogameIndex = lastVideogameIndex - videogameForPage;
+    const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);
+    const gameDetail = useSelector(state => state.gameDetail);
+
+    // console.log(gameDetail);
+    
+    const pagination = (pageNum) => {
+
+        setCurrentPage(pageNum)
+
+    }
 
     useEffect(() => {
 
@@ -65,20 +80,26 @@ export default function Home() {
                 <button onClick={e => handleClick(e)} >Actualizar Lista</button>
 
             </div>
+            
+            <div>
+                
+                <Paginado videogameForPage={videogameForPage} allVideoGames={allVideoGames.length} pagination={pagination} />
+
+            </div>
 
             <div className='listadoVG'>
 
                 {
 
-                    allVideoGames?.map( e => {
+                    currentVideogame?.map( e => {
 
                         return (
 
                             <div>
 
-                                <Link to={`/home/${e.id}`}>
+                                <Link to={`/home/${e.id}`} onClick={() => getGamesId(e.id)}>
                                     
-                                    <Card img={e.image} name={e.name} genres={e.genres} key={e.id} />
+                                    <Card img={e.image} name={e.name} genres={e.genres.join(' ')} key={e.id} />
 
                                 </Link>
 
