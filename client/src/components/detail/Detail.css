@@ -1,0 +1,50 @@
+.subContDetail {
+
+    width: 80%;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 30px auto;
+    padding: 20px 0;
+    border: 1px solid red;
+    border-radius: 30px;
+
+}
+
+.imgDetail {
+
+    width: 50%;
+    height: auto;
+    border-radius: 30px;
+    margin: 15px 0;
+
+}
+
+h1 {
+
+    margin: 0;
+
+}
+
+h3:hover {
+
+    color: white;
+
+}
+
+p {
+
+    width: 95%;
+    color: white;
+    margin: 15px auto;
+    font-size: 18px;
+
+}
+
+.textDetail {
+
+    width: 80%;
+    background: rgba(0, 0, 0, 0.9);
+    margin: auto;
+    padding: 10px 20px;
+    border-radius: 30px;
+
+}

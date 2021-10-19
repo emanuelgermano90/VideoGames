@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getListVideogames, getGamesId } from '../../actions';
+import { getListVideogames, getGamesId, getGamesGenres, getSortRating } from '../../actions';
 import { Link } from "react-router-dom";
 import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
@@ -21,7 +21,7 @@ export default function Home() {
     const lastVideogameIndex = currentPage * videogameForPage;
     const firstVideogameIndex = lastVideogameIndex - videogameForPage;
     const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);
-    const gameDetail = useSelector(state => state.gameDetail);
+    const allGenres = useSelector(state => state.allGenres);
 
     // console.log(gameDetail);
     
@@ -45,6 +45,18 @@ export default function Home() {
 
     }
 
+    useEffect(() => {
+
+        dispatch(getGamesGenres())
+
+    },[dispatch])
+
+    const handleSort = (e) => {
+
+        dispatch(getSortRating(e.target.value))
+
+    }
+
     return(
 
         <div className='homeVG'>
@@ -57,14 +69,6 @@ export default function Home() {
 
                 <select>
 
-                    <option>Generos</option>
-                    <option>Video Juegos Existente</option>
-                    <option>Video Juegos Agregados</option>
-
-                </select>
-
-                <select>
-
                     <option>Ascendente</option>
                     <option>Descendente</option>
 
@@ -72,8 +76,24 @@ export default function Home() {
 
                 <select>
 
-                    <option>Alfabeticamente</option>
-                    <option>Rating</option>
+                    {
+
+                        allGenres.forEach(e => {
+
+                            <option>{e}</option>
+                            
+                        })
+
+                    }
+                    <option>Video Juegos Existente</option>
+                    <option>Video Juegos Agregados</option>
+
+                </select>
+
+                <select onChange={e => handleSort(e)} >
+
+                    <option value='alfa' >Alfabeticamente</option>
+                    <option value='rating' >Rating</option>
 
                 </select>
 
@@ -96,8 +116,8 @@ export default function Home() {
                         return (
 
                             <div>
-
-                                <Link to={`/home/${e.id}`} onClick={() => getGamesId(e.id)}>
+                                {/* onClick={() => dispatch(getGamesId(e.id))} */}
+                                <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
                                     
                                     <Card img={e.image} name={e.name} genres={e.genres.join(' ')} key={e.id} />
 

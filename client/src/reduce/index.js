@@ -1,9 +1,10 @@
-import { GET_GAMES, GET_GAME_ID } from '../actions'
+import { GET_GAMES, GET_GAME_ID, GET_ALL_GENRES, SORT_BY_RATING } from '../actions'
 
 const initialState = {
 
     videogames: [],
-    gameDetail: []
+    gameDetail: [],
+    allGenres: [],
 
 }
 
@@ -20,13 +21,37 @@ const rootReducer = (state = initialState, action) => {
             }
 
         case GET_GAME_ID:
+            
+            return {
 
-        return {
+                ...state,
+                gameDetail: action.payload
 
-            ...state,
-            gameDetail: action.payload
+            }
 
-        }
+        case GET_ALL_GENRES:
+        
+            return {
+
+                ...state,
+                allGenres: action.payload
+
+            }
+
+        case SORT_BY_RATING:
+
+            if(action.payload === 'alfa') {
+
+                const gameAlfa = state.videogames.sort();
+
+                return {
+
+                    ...state,
+                    videogames: gameAlfa
+    
+                }
+
+            } else console.log('algo')
     
         default:
             return state;
