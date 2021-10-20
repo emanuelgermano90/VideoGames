@@ -3,6 +3,7 @@ import axios from 'axios';
 export const GET_GAMES = 'GET_GAMES';
 export const GET_GAME_ID = 'GET_GAME_ID';
 export const GET_ALL_GENRES = 'GET_ALL_GENRES';
+export const FILTER_GENRES = 'FILTER_GENRES';
 export const SORT_BY_RATING = 'SORT_BY_RATING';
 
 export function getListVideogames(){
@@ -48,9 +49,19 @@ export function getGamesGenres() {
                             payload: genres.data
 
                         }))
-        
     }
     
+}
+
+export function filterGenres(payload){
+    
+    return {
+
+        type: FILTER_GENRES,
+        payload
+
+    }
+
 }
 
 export function getSortRating(payload) {

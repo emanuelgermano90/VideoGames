@@ -5,9 +5,9 @@ export default function Paginado({videogameForPage, allVideoGames, pagination}) 
     
     const pageNum = [];
 
-    for (let i = 0; i <= Math.ceil(allVideoGames/videogameForPage); i++) {
+    for (let i = 1; i <= Math.ceil(allVideoGames/videogameForPage); i++) {
 
-        pageNum.push(i+1);
+        pageNum.push(i);
         
     }
     

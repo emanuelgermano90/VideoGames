@@ -6,9 +6,9 @@ export default function LandingPage(){
 
     return(
 
-        <div className='landingVG'>
+        <div>
 
-            <h1>Bienvenidos</h1>
+            <h1 className='h1Landing' >Bienvenidos</h1>
 
             <Link to='/home'>
 

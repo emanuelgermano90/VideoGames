@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import './Detail.css';
 
 export default function Detail() {
-
+    // <p dangerouslySetInnerHTML= {{__html: nombre de variable}} ></p> probar para cambiar el detalle a html
     const { name, image, genres, description, releaseDate, rating, plataform } = useSelector(state => state.gameDetail);
     
     return(
@@ -37,3 +37,4 @@ export default function Detail() {
     )
     
 }
+

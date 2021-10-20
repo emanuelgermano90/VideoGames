@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getListVideogames, getGamesId, getGamesGenres, getSortRating } from '../../actions';
+import { getListVideogames, getGamesId, getGamesGenres, filterGenres, getSortRating } from '../../actions';
 import { Link } from "react-router-dom";
 import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
@@ -16,14 +16,12 @@ export default function Home() {
 
     const dispatch = useDispatch();
     const allVideoGames = useSelector(state => state.videogames);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [videogameForPage, setVideogameForPage] = useState(15);
-    const lastVideogameIndex = currentPage * videogameForPage;
-    const firstVideogameIndex = lastVideogameIndex - videogameForPage;
-    const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);
-    const allGenres = useSelector(state => state.allGenres);
-
-    // console.log(gameDetail);
+    const [currentPage, setCurrentPage] = useState(1);  // paginado
+    const [videogameForPage, setVideogameForPage] = useState(15);   // paginado
+    const lastVideogameIndex = currentPage * videogameForPage;  // paginado
+    const firstVideogameIndex = lastVideogameIndex - videogameForPage;  // paginado
+    const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);  // paginado
+    const allGenres = useSelector(state => state.allGenres); // traigo los generos
     
     const pagination = (pageNum) => {
 
@@ -31,9 +29,10 @@ export default function Home() {
 
     }
 
-    useEffect(() => {
+    useEffect(() => { // para montar la lista de juegos y los generos
 
         dispatch(getListVideogames());
+        dispatch(getGamesGenres());
 
     },[dispatch]);
 
@@ -45,11 +44,11 @@ export default function Home() {
 
     }
 
-    useEffect(() => {
+    const handleFilter = (e) => {
 
-        dispatch(getGamesGenres())
+        dispatch(filterGenres(e.target.value));
 
-    },[dispatch])
+    }
 
     const handleSort = (e) => {
 
@@ -74,19 +73,22 @@ export default function Home() {
 
                 </select>
 
-                <select>
-
+                <select onChange={e => handleFilter(e)} >
+                    <option value='all' >All Genres</option>
                     {
 
-                        allGenres.forEach(e => {
+                        allGenres?.map( e => {
+                            return (
 
-                            <option>{e}</option>
-                            
+                                <option value={e} >{e}</option>
+
+                            )
+
                         })
 
                     }
-                    <option>Video Juegos Existente</option>
-                    <option>Video Juegos Agregados</option>
+                    <option value='existente' >Video Juegos Existente</option>
+                    <option value='agregados' >Video Juegos Agregados</option>
 
                 </select>
 
@@ -113,13 +115,28 @@ export default function Home() {
 
                     currentVideogame?.map( e => {
 
+                        let genDis = [];
+
+                        e.genres.map(e => {
+
+                            if(typeof e === 'object') {
+
+                                genDis.push(e.name)
+
+                            } else {
+
+                                genDis.push(e)
+                            }
+
+                        })
+
                         return (
 
                             <div>
                                 {/* onClick={() => dispatch(getGamesId(e.id))} */}
                                 <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
                                     
-                                    <Card img={e.image} name={e.name} genres={e.genres.join(' ')} key={e.id} />
+                                    <Card img={e.image} name={e.name} genres={genDis.join(' ')} key={e.id} />
 
                                 </Link>
 

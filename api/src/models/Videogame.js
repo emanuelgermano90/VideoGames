@@ -53,5 +53,15 @@ module.exports = (sequelize) => {
       
     },
 
+    createInDb: {
+
+      type: DataTypes.BOOLEAN,
+
+      allowNull: false,
+
+      defaultValue: true,
+
+    },
+
   });
 };
