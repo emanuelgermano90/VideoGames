@@ -1,4 +1,4 @@
-import { GET_GAMES, GET_GAME_ID, GET_ALL_GENRES, FILTER_GENRES, SORT_BY_RATING } from '../actions'
+import { GET_GAMES, GET_GAME_ID, GET_ALL_GENRES, GET_GAMES_NAME, FILTER_GENRES, SORT_BY, ORDER_ASC_DES } from '../actions'
 
 const initialState = {
 
@@ -6,6 +6,7 @@ const initialState = {
     backupGames: [],
     gameDetail: [],
     allGenres: [],
+    orderAlfa: true,
 
 }
 
@@ -32,7 +33,7 @@ const rootReducer = (state = initialState, action) => {
             }
 
         case GET_ALL_GENRES:
-        
+            
             return {
 
                 ...state,
@@ -40,9 +41,18 @@ const rootReducer = (state = initialState, action) => {
 
             }
 
+        case GET_GAMES_NAME:
+
+            return {
+
+                ...state,
+                videogames: action.payload
+
+            }
+
         case FILTER_GENRES:
 
-            const allVideogames = state.backupGames
+            const allVideogames = state.backupGames;
 
             if(action.payload === 'existente'){
 
@@ -75,24 +85,96 @@ const rootReducer = (state = initialState, action) => {
 
             }
 
-
-
-        case SORT_BY_RATING:
+        case SORT_BY:
 
             if(action.payload === 'alfa') {
 
-                const gameAlfa = state.videogames.sort();
+                const gameAlfa = state.videogames.sort((a,b) => {
+
+                        if(a.name < b.name) return -1
+                            else if(a.name > b.name) return 1
+                                else return 0
+
+                    });
+                
+                return {
+
+                    ...state,
+                    videogames: gameAlfa,
+                    orderAlfa: true,
+    
+                }
+
+            } else {
+
+                const gameAlfa = state.videogames.sort((a,b) => {
+
+                        return a.rating - b.rating;
+
+                    });
+                
+                return {
+
+                    ...state,
+                    videogames: gameAlfa,
+                    orderAlfa: false,
+    
+                }
+
+            }
+
+        case ORDER_ASC_DES:
+
+            if(state.orderAlfa){
+
+                let orderAscDes = action.payload === 'asc' ? state.videogames.sort((a,b) => {
+
+                        if(a.name < b.name) return -1
+                            else if(a.name > b.name) return 1
+                                else return 0
+
+                    }) : state.videogames.sort((a,b) => {
+
+                        if(a.name < b.name) return 1
+                            else if(a.name > b.name) return -1
+                                else return 0
+
+                    })
 
                 return {
 
                     ...state,
-                    videogames: gameAlfa
-    
+                    videogames: orderAscDes
+
                 }
 
-            } else console.log('algo')
-    
+            } else {
+
+                let orderAscDes = action.payload === 'asc' ? state.videogames.sort((a,b) => {
+
+                        if(a.rating < b.rating) return -1
+                            else if(a.rating > b.rating) return 1
+                                else return 0
+
+                    }) : state.videogames.sort((a,b) => {
+
+                        if(a.rating < b.rating) return 1
+                            else if(a.rating > b.rating) return -1
+                                else return 0
+
+                    })
+
+                return {
+
+                    ...state,
+                    videogames: orderAscDes
+
+                }
+
+            }
+
         default:
+
             return state;
     }
 

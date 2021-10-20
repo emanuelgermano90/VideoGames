@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getListVideogames, getGamesId, getGamesGenres, filterGenres, getSortRating } from '../../actions';
+import { getListVideogames, getGamesId, getGamesGenres, filterGenres, getSortRating, getOrder } from '../../actions';
 import { Link } from "react-router-dom";
 import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
@@ -16,13 +16,13 @@ export default function Home() {
 
     const dispatch = useDispatch();
     const allVideoGames = useSelector(state => state.videogames);
+    const [order, setOrder] = useState('');
     const [currentPage, setCurrentPage] = useState(1);  // paginado
     const [videogameForPage, setVideogameForPage] = useState(15);   // paginado
     const lastVideogameIndex = currentPage * videogameForPage;  // paginado
     const firstVideogameIndex = lastVideogameIndex - videogameForPage;  // paginado
     const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);  // paginado
     const allGenres = useSelector(state => state.allGenres); // traigo los generos
-    
     const pagination = (pageNum) => {
 
         setCurrentPage(pageNum)
@@ -46,13 +46,29 @@ export default function Home() {
 
     const handleFilter = (e) => {
 
+        e.preventDefault();
+
         dispatch(filterGenres(e.target.value));
 
     }
 
     const handleSort = (e) => {
 
-        dispatch(getSortRating(e.target.value))
+        e.preventDefault();
+
+        dispatch(getSortRating(e.target.value));
+
+        setOrder(`Order ${e.target.value}`);
+
+    }
+
+    const handleOrder = (e) => {
+
+        e.preventDefault();
+
+        dispatch(getOrder(e.target.value));
+
+        setOrder(`Order ${e.target.value}`)
 
     }
 
@@ -66,10 +82,10 @@ export default function Home() {
 
             <div>
 
-                <select>
+                <select onChange={e => handleOrder(e)} >
 
-                    <option>Ascendente</option>
-                    <option>Descendente</option>
+                    <option value='asc' >Ascendente</option>
+                    <option value='des' >Descendente</option>
 
                 </select>
 
@@ -114,7 +130,7 @@ export default function Home() {
                 {
 
                     currentVideogame?.map( e => {
-
+                        
                         let genDis = [];
 
                         e.genres.map(e => {

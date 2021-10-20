@@ -3,8 +3,10 @@ import axios from 'axios';
 export const GET_GAMES = 'GET_GAMES';
 export const GET_GAME_ID = 'GET_GAME_ID';
 export const GET_ALL_GENRES = 'GET_ALL_GENRES';
+export const GET_GAMES_NAME = 'GET_GAMES_NAME';
 export const FILTER_GENRES = 'FILTER_GENRES';
-export const SORT_BY_RATING = 'SORT_BY_RATING';
+export const SORT_BY = 'SORT_BY';
+export const ORDER_ASC_DES = 'ORDER_ASC_DES';
 
 export function getListVideogames(){
 
@@ -53,6 +55,22 @@ export function getGamesGenres() {
     
 }
 
+export function getVideogame(name) {
+
+    return async function(dispatch) {
+
+        return await axios(`http://localhost:3001/videogames?name=${name}`)
+                        .then(game => dispatch({
+
+                            type: GET_GAMES_NAME,
+                            payload: game.data
+
+                        }))
+
+    }
+
+}
+
 export function filterGenres(payload){
     
     return {
@@ -68,9 +86,20 @@ export function getSortRating(payload) {
 
     return {
 
-        type: SORT_BY_RATING,
+        type: SORT_BY,
         payload
 
     }
     
+}
+
+export function getOrder(payload) {
+
+    return {
+
+        type: ORDER_ASC_DES,
+        payload
+
+    }
+
 }

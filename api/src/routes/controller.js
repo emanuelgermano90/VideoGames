@@ -18,13 +18,30 @@ const getVideogame = async (req, res, next) => {
 
             for (let i = 0; i < 15; i++) {
 
-                const element = game.data.results[i].name;
+                const element = game.data.results[i];
 
                 listGame.push(element);
                 
             }
 
-            return res.status(200).send(listGame);
+            let gameName = [];
+
+            listGame.forEach(e => {
+
+                let genresOb = e.genres.map(genres => genres.name);
+
+                gameName.push({
+                            //  ----------> ver como cambiar la foto de los videojuegos que no tienen fotos
+                            id: e.id,
+                            name: e.name,
+                            image: e.background_image?e.background_image:"https://upload.wikimedia.org/wikipedia/commons/6/66/Sin_datos.jpg",
+                            genres: genresOb,
+                            rating: e.rating,
+                        });
+
+            })
+            
+            return res.status(200).send(gameName);
 
         })
         .catch(err => res.status(401).send({data: err}))
@@ -51,6 +68,7 @@ const getVideogame = async (req, res, next) => {
                             name: ele.name,
                             image: ele.background_image,
                             genres: genresOb,
+                            rating: ele.rating,
                         })
                     
                     })
@@ -116,66 +134,35 @@ const getVideogameId = async (req, res, next) => {
 
 const getGenres = async (req, res, next) => {
 
-    try {
-
-        let genDb = await Genres.findAll({
-
-                                attributes: ['name']
-                
-                            });
-
-        let genDbName = await genDb.map(g => g.name);
-
-        await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
-            .then(async (gen) => {
-
-                let listGenres = [];
+   await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
+            .then((gen) => {
 
                 gen.data.results.forEach(async (g) => {
-
-                    if(genDbName.indexOf(g.name) < 0) {
-
-                        listGenres.push(g.name);
                         
-                        try {
+                        let genderDb = await Genres.findOrCreate({  // -----------> agrego los generos a la base de datos
 
-                            let genderDb = await Genres.create({
+                            where: { name: g.name }
+        
+                        });
 
-                                name: g.name,
+                        genderDb = await Genres.findAll({  // -----------> traigo los generos de la base de datos
+
+                            attributes: ['name']
             
-                            });
+                        });
 
-                            genderDb = await Genres.findAll({
-
-                                attributes: ['name']
-                
-                            });
-
-                            let listGenDb = await genderDb.map(g => g.name);
-
-                            return res.status(200).send(listGenDb);
-                            
-                        } catch (err) {
-
-                            return res.status(401).send({error: err});
-                            
-                        }
-
-                    } else {
+                        let listGenDb = genderDb.map(g => g.name);
                         
-                        return res.status(200).send(genDbName);
+                        res.status(200).json(listGenDb);
 
-                    }
-                        
                 });
 
             })
+            .catch(err => {
 
-    } catch(e) {
+                res.sendStatus(400);
 
-        console.log(e)
-
-    }
+            })
 
 };
 
