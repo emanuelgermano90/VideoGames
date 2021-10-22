@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getListVideogames, getGamesId, getGamesGenres, filterGenres, getSortRating, getOrder } from '../../actions';
 import { Link } from "react-router-dom";
+import Nav from '../nav/Nav';
 import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
 import Paginado from "../pagination/Pagination";
+import sin_img from "../../images/Sin_datos.jpg";
 import './Home.css';
-// imput de busqueda para videojuegos por nombre
-// area para el listado de videojuegos (imagen, nombre, generos)
-// boton/opciones filtre por genero o videojuego existente o 
-//                                  agregado por nosotros
-// boton/opciones ordenar ascendente o descendente (afabeticamente y rating)
-// paginado de lista de 15 videojuegos por pagina
+
 export default function Home() {
 
     const dispatch = useDispatch();
@@ -23,6 +20,7 @@ export default function Home() {
     const firstVideogameIndex = lastVideogameIndex - videogameForPage;  // paginado
     const currentVideogame = allVideoGames.slice(firstVideogameIndex, lastVideogameIndex);  // paginado
     const allGenres = useSelector(state => state.allGenres); // traigo los generos
+
     const pagination = (pageNum) => {
 
         setCurrentPage(pageNum)
@@ -78,18 +76,20 @@ export default function Home() {
 
             <h1>Video Juegos</h1>
 
+            <Nav />
+
             <SearchBar />
 
-            <div>
+            <div className='contentSelect'>
 
-                <select onChange={e => handleOrder(e)} >
+                <select className='selectStyle' onChange={e => handleOrder(e)} >
 
                     <option value='asc' >Ascendente</option>
                     <option value='des' >Descendente</option>
 
                 </select>
 
-                <select onChange={e => handleFilter(e)} >
+                <select className='selectStyle' onChange={e => handleFilter(e)} >
                     <option value='all' >All Genres</option>
                     {
 
@@ -108,7 +108,7 @@ export default function Home() {
 
                 </select>
 
-                <select onChange={e => handleSort(e)} >
+                <select className='selectStyle' onChange={e => handleSort(e)} >
 
                     <option value='alfa' >Alfabeticamente</option>
                     <option value='rating' >Rating</option>
@@ -152,7 +152,7 @@ export default function Home() {
                                 {/* onClick={() => dispatch(getGamesId(e.id))} */}
                                 <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
                                     
-                                    <Card img={e.image} name={e.name} genres={genDis.join(' ')} key={e.id} />
+                                    <Card img={e.image?e.image:sin_img} name={e.name} genres={genDis.join(' ')} key={e.id} />
 
                                 </Link>
 

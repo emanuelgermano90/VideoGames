@@ -31,10 +31,10 @@ const getVideogame = async (req, res, next) => {
                 let genresOb = e.genres.map(genres => genres.name);
 
                 gameName.push({
-                            //  ----------> ver como cambiar la foto de los videojuegos que no tienen fotos
+                            
                             id: e.id,
                             name: e.name,
-                            image: e.background_image?e.background_image:"https://upload.wikimedia.org/wikipedia/commons/6/66/Sin_datos.jpg",
+                            image: e.background_image,
                             genres: genresOb,
                             rating: e.rating,
                         });
@@ -169,7 +169,7 @@ const getGenres = async (req, res, next) => {
 const postVideogame = async (req, res, next) => {
     // nombre- descripcion- fecha de lanzamiento- rating- varios generos- varias plataformas
     const { name, description, releaseDate, rating, platforms, genres } = req.body;
-    console.log( name, description, releaseDate, rating, platforms, genres)
+    
     if(!name || !description || !releaseDate || !rating || !platforms || !genres) return res.status(401).send({error: 'there are empty fields'})
 
     try {

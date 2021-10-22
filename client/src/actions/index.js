@@ -4,6 +4,7 @@ export const GET_GAMES = 'GET_GAMES';
 export const GET_GAME_ID = 'GET_GAME_ID';
 export const GET_ALL_GENRES = 'GET_ALL_GENRES';
 export const GET_GAMES_NAME = 'GET_GAMES_NAME';
+export const POST_GAMES = 'POST_GAMES';
 export const FILTER_GENRES = 'FILTER_GENRES';
 export const SORT_BY = 'SORT_BY';
 export const ORDER_ASC_DES = 'ORDER_ASC_DES';
@@ -66,6 +67,16 @@ export function getVideogame(name) {
                             payload: game.data
 
                         }))
+
+    }
+
+}
+
+export function postGames(payload) {
+
+    return async function(dispatch) {
+
+        return await axios.post(`http://localhost:3001/videogame`,payload)
 
     }
 
