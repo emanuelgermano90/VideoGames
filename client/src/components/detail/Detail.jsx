@@ -1,38 +1,45 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Nav from '../nav/Nav'
 import './Detail.css';
 
 export default function Detail() {
-    // <p dangerouslySetInnerHTML= {{__html: nombre de variable}} ></p> probar para cambiar el detalle a html
+    
     const { name, image, genres, description, releaseDate, rating, plataform } = useSelector(state => state.gameDetail);
     
     return(
 
-        <div className='contDetail'>
+        <>
 
-            <div className='subContDetail' >
+            <Nav />
 
-                <h1>{name}</h1>
+            <div className='contDetail'>
 
-                <img className='imgDetail' src={image} alt='imagen de muestra' />
+                <div className='subContDetail' >
 
-                <div className='textDetail' >
+                    <h1>{name}</h1>
 
-                    <h3 className='h3Detail' >Fecha de Lanzamiento: {releaseDate}</h3>
+                    <img className='imgDetail' src={image} alt='imagen de muestra' />
 
-                    <h3 className='h3Detail' >Genero: {genres}</h3>
+                    <div className='textDetail' >
 
-                    <h3 className='h3Detail' >Clasificacion: {rating}</h3>
+                        <h3 className='h3Detail' >Fecha de Lanzamiento: {releaseDate}</h3>
 
-                    <h3 className='h3Detail' >Plataformas: {plataform}</h3>
+                        <h3 className='h3Detail' >Genero: {genres}</h3>
 
-                    <p id='pDetail' >{description}</p>
+                        <h3 className='h3Detail' >Clasificacion: {rating}</h3>
+
+                        <h3 className='h3Detail' >Plataformas: {plataform}</h3>
+
+                        <p id='pDetail' dangerouslySetInnerHTML= {{__html: description}} ></p>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+        </>
 
     )
     

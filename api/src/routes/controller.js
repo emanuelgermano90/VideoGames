@@ -105,31 +105,55 @@ const getVideogame = async (req, res, next) => {
 const getVideogameId = async (req, res, next) => {
     // obtener imagen nombre generos descripcion fecha de lanzamiento rating plataformas
     const { idVideogame } = req.params;
-    
-    await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`)
-        .then(games => {
-            
-            let results = games.data;
-            
-            let genresOb = results.genres.map(genres => genres.name);
-            
-            let platOb = results.platforms.map(plat => plat.platform.name);
 
-            return res.status(200).send({  
+    if(!isNaN(idVideogame)){
+
+        await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`)
+            .then(games => {
                 
-                name: results.name,
-                genres: genresOb,
-                image: results.background_image,
-                description: results.description,
-                releaseDate: results.released,
-                rating: results.rating,
-                plataform: platOb,
+                let results = games.data;
+                
+                let genresOb = results.genres.map(genres => genres.name);
+                
+                let platOb = results.platforms.map(plat => plat.platform.name);
+
+                return res.status(200).send({  
+                    
+                    name: results.name,
+                    genres: genresOb,
+                    image: results.background_image,
+                    description: results.description,
+                    releaseDate: results.released,
+                    rating: results.rating,
+                    plataform: platOb,
+
+                })
 
             })
+            .catch(err => res.status(401).send({data: err}))
 
-        })
-        .catch(err => res.status(401).send({data: err}))
+    } else {
 
+        // falta hacer el codigo para traer los datos de un video game buscado por id en la BD y por nombre
+
+        let gameDb = await Videogame.findAll({
+
+            include:{
+
+                model: Genres,
+                attributes: ['name'],
+                through: {
+
+                    attributes: [],
+
+                },
+
+            }
+
+        });
+
+    }
+    
 };
 
 const getGenres = async (req, res, next) => {

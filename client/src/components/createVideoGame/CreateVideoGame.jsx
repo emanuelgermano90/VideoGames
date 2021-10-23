@@ -41,23 +41,59 @@ export default function CreateVideoGame() {
 
 		if(e.target.name === 'genres') {
 
-			setInput({
+			if(input.genres.length === 0) {
 
-				...input,
+				setInput({
 
-				genres: [...input.genres, e.target.value]
+					...input,
 
-			});
+					genres: [...input.genres, e.target.value]
+
+				});
+
+			} else {
+
+				if(input.genres.indexOf(e.target.value) < 0) {
+
+					setInput({
+
+						...input,
+
+						genres: [...input.genres, e.target.value]
+
+					});
+
+				}
+
+			}
 
 		} else {
 
-			setInput({
+			if(input.platforms.length === 0) {
 
-				...input,
+				setInput({
 
-				platforms: [...input.platforms, e.target.value]
+					...input,
 
-			});
+					platforms: [...input.platforms, e.target.value]
+
+				});
+
+			} else {
+
+				if(input.platforms.indexOf(e.target.value) < 0) {
+
+					setInput({
+
+						...input,
+
+						platforms: [...input.platforms, e.target.value]
+
+					});
+
+				}
+
+			}
 
 		}
 
@@ -82,6 +118,37 @@ export default function CreateVideoGame() {
 
 		});
 
+		document.getElementsByTagName("input")[0].value = "";
+		document.getElementsByTagName("textarea")[0].value = "";
+		document.getElementById('rating').value = '';
+		document.getElementById('releaseDate').value = '';
+
+	}
+
+	const handleElim = (e, state) => {
+		
+		if(state === 'genres'){
+
+			setInput({
+
+				...input,
+
+				genres: input.genres.filter((el,i) => el != e)
+
+			})
+
+		} else {
+
+			setInput({
+
+				...input,
+
+				platforms: input.platforms.filter((el,i) => el != e)
+
+			})
+
+		}
+		
 	}
 
 	const controlRating = (e) => {
@@ -125,14 +192,14 @@ export default function CreateVideoGame() {
 					<div className='inputDate' >
 						
 						<label>Release Date:</label>
-						<input name='releaseDate' type='date' onChange={e => handleChange(e)} />
+						<input id='releaseDate' name='releaseDate' type='date' onChange={e => handleChange(e)} />
 
 					</div>
 
 					<div className='inputRat' >
 						
 						<label>Rating:</label>
-						<input name='rating' type='number' onChange={e => {
+						<input id='rating' name='rating' type='number' onChange={e => {
 
 							handleChange(e);
 
@@ -142,7 +209,19 @@ export default function CreateVideoGame() {
 
 					</div>
 
-					<ul><li className='listSelect' >{input.genres.map(e => e + ', ')}</li></ul>
+					<div className='listSelect' >{input.genres.map(e => {
+
+						return(
+
+							<div className='cardSelect'>
+								
+								<li className='curz' onClick={ev => handleElim(e, 'genres')} >x</li>{e} 
+
+							</div>
+
+							)
+
+					})}</div>
 
 					<div className='contentOption'>
 
@@ -197,7 +276,19 @@ export default function CreateVideoGame() {
 
 					</div>
 
-					<ul><li className='listSelect' >{input.platforms.map(e => e + ', ')}</li></ul>
+					<ul><li className='listSelect' >{input.platforms.map(e => {
+
+						return(
+
+							<div className='cardSelect'>
+								
+								<li className='curz' onClick={ev => handleElim(e, 'platforms')} >x</li>{e} 
+
+							</div>
+
+							)
+
+					})}</li></ul>
 
 	                <input className='submit' name='submit' type='submit' value='Create Video Games' />
 
