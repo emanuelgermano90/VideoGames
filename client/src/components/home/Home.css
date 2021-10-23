@@ -70,3 +70,12 @@ button:hover {
     background: rgba(194, 2, 2, 0.8);
 
 }
+
+.imgLoading {
+
+    width: 20%;
+    height: 200px;
+    border-radius: 30px;
+    margin-top: 30px;
+
+}

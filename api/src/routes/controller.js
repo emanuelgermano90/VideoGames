@@ -169,8 +169,10 @@ const getGenres = async (req, res, next) => {
 const postVideogame = async (req, res, next) => {
     // nombre- descripcion- fecha de lanzamiento- rating- varios generos- varias plataformas
     const { name, description, releaseDate, rating, platforms, genres } = req.body;
-    
+    console.log({ name, description, releaseDate, rating, platforms, genres })
     if(!name || !description || !releaseDate || !rating || !platforms || !genres) return res.status(401).send({error: 'there are empty fields'})
+
+    let platformsStr = platforms.toString()
 
     try {
 
@@ -180,7 +182,7 @@ const postVideogame = async (req, res, next) => {
             description,
             releaseDate,
             rating,
-            platforms
+            platforms: platformsStr
 
         });
 

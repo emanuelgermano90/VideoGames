@@ -14,7 +14,7 @@ export default function CreateVideoGame() {
 		description: '',
 		releaseDate: '',
 		rating: 0,
-		plataforms: [],	
+		platforms: [],	
 		genres: [],
 
 	});
@@ -37,56 +37,38 @@ export default function CreateVideoGame() {
 
 	}
 	
-	const handleCheck = (e) => {
+	const handleSelect = (e) => {
 
-		if(e.target.checked) {
-
-			if(e.target.name === 'genres') {
-
-				setInput({
-
-					...input,
-
-					genres: [...input.genres, e.target.value]
-
-				});
-
-			} else {
-
-				setInput({
-
-					...input,
-
-					plataforms: [...input.plataforms, e.target.value]
-
-				});
-
-			}
-
-		} else {
-
-			let g = e.target.value
-
-			let i = input.genres.indexOf(g);
+		if(e.target.name === 'genres') {
 
 			setInput({
 
 				...input,
 
-				genres: input.genres.splice(i, 1)
+				genres: [...input.genres, e.target.value]
 
 			});
-			console.log(input.genres.splice(i, 1))
+
+		} else {
+
+			setInput({
+
+				...input,
+
+				platforms: [...input.platforms, e.target.value]
+
+			});
+
 		}
 
 	}
-	console.log(input)
+	
 	const handleSubmitCreate = (e) => {
 
 		e.preventDefault();
 
 		dispatch(postGames(input));
-
+		
 		alert('Video Games Creado')
 
 		setInput({
@@ -95,10 +77,22 @@ export default function CreateVideoGame() {
 			description: '',
 			releaseDate: '',
 			rating: 0,
-			plataforms: [],
+			platforms: [],
 			genres: [],
 
 		});
+
+	}
+
+	const controlRating = (e) => {
+
+		if(e.target.value > 5 || e.target.value < 0) {
+
+			alert('El valor de Rating es de entre 0 y 5')
+
+			e.target.value = ''
+
+		}
 
 	}
 
@@ -138,9 +132,17 @@ export default function CreateVideoGame() {
 					<div className='inputRat' >
 						
 						<label>Rating:</label>
-						<input name='rating' type='number' onChange={e => handleChange(e)} />
+						<input name='rating' type='number' onChange={e => {
+
+							handleChange(e);
+
+							controlRating(e)
+
+						}} />
 
 					</div>
+
+					<ul><li className='listSelect' >{input.genres.map(e => e + ', ')}</li></ul>
 
 					<div className='contentOption'>
 
@@ -148,14 +150,14 @@ export default function CreateVideoGame() {
 							
 							<label>Genres</label>
 						
-							<select className='select' onChange={e => handleCheck(e)} >
+							<select className='select' onChange={e => handleSelect(e)} name='genres' >
 
 								{
 									
 				                    allGenres?.map( e => {
 				                        return (
 
-			                            	<option className='option' name='genres' value={e} >{e}</option>
+			                            	<option className='option' value={e} >{e}</option>
 
 				                        )
 
@@ -171,29 +173,31 @@ export default function CreateVideoGame() {
 
 		                	<label>Plataforms</label>
 		                	
-		                	<select className='select' onChange={e => handleCheck(e)} >
+		                	<select className='select' onChange={e => handleSelect(e)} name='plataforms' >
 
-								<option className='option' name='plataforms' value='PC' >PC</option>
+								<option className='option' value='PC' >PC</option>
 
-								<option className='option' name='plataforms' value='Mac' >Mac</option>
+								<option className='option' value='Mac' >Mac</option>
 
-								<option className='option' name='plataforms' value='Linux' >Linux</option>
+								<option className='option' value='Linux' >Linux</option>
 
-								<option className='option' name='plataforms' value='PlayStation' >PlayStation</option>
+								<option className='option' value='PlayStation' >PlayStation</option>
 
-								<option className='option' name='plataforms' value='Xbox' >Xbox</option>
+								<option className='option' value='Xbox' >Xbox</option>
 
-								<option className='option' name='plataforms' value='Nintendo' >Nintendo</option>
+								<option className='option' value='Nintendo' >Nintendo</option>
 
-								<option className='option' name='plataforms' value='Android' >Android</option>
+								<option className='option' value='Android' >Android</option>
 
-								<option className='option' name='plataforms' value='iOS' >iOS</option>
+								<option className='option' value='iOS' >iOS</option>
 
 			                </select>
 
 		                </div>
 
 					</div>
+
+					<ul><li className='listSelect' >{input.platforms.map(e => e + ', ')}</li></ul>
 
 	                <input className='submit' name='submit' type='submit' value='Create Video Games' />
 

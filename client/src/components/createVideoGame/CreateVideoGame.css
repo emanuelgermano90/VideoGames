@@ -158,3 +158,17 @@ textarea:focus {
 	background: rgba(194, 2, 2, 0.8);
 
 }
+
+.listSelect {
+
+	background: 0;
+	border: 0;
+	font-size: 15px;
+
+}
+
+.listSelect:hover {
+
+	background: 0;
+
+}

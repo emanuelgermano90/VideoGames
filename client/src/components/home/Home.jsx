@@ -7,6 +7,7 @@ import SearchBar from "../searchBar/SearchBar";
 import Card from "../card/Card";
 import Paginado from "../pagination/Pagination";
 import sin_img from "../../images/Sin_datos.jpg";
+import loading from '../../images/1.gif';
 import './Home.css';
 
 export default function Home() {
@@ -125,46 +126,70 @@ export default function Home() {
 
             </div>
 
-            <div className='listadoVG'>
+            {
 
-                {
+                allVideoGames.length === 0 ? <img className='imgLoading' src={loading} /> :
 
-                    currentVideogame?.map( e => {
-                        
-                        let genDis = [];
+                <div className='listadoVG'>
 
-                        e.genres.map(e => {
+                    {
 
-                            if(typeof e === 'object') {
+                        currentVideogame?.map( e => {
+                            
+                            let genDis = [];
 
-                                genDis.push(e.name)
+                            e.genres.map(e => {
+
+                                if(typeof e === 'object') {
+
+                                    genDis.push(e.name)
+
+                                } else {
+
+                                    genDis.push(e)
+                                }
+
+                            })
+
+                            if(allVideoGames.length === 0) {
+
+                                return (
+
+                                    <div className='imgContent'>
+                                        
+                                        <h1>hola</h1>
+
+                                    </div>
+
+                                )
 
                             } else {
 
-                                genDis.push(e)
+                                return (
+
+                                    <div className='imgContent'>
+                                        
+                                        <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
+                                            
+                                            <Card img={e.image?e.image:sin_img} name={e.name} genres={genDis.join(' ')} key={e.id} />
+
+                                        </Link>
+
+                                    </div>
+
+                                )
+
                             }
+                            
+                            
 
                         })
 
-                        return (
+                    }
 
-                            <div>
-                                {/* onClick={() => dispatch(getGamesId(e.id))} */}
-                                <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
-                                    
-                                    <Card img={e.image?e.image:sin_img} name={e.name} genres={genDis.join(' ')} key={e.id} />
+                </div>
 
-                                </Link>
-
-                            </div>
-
-                        )
-
-                    })
-
-                }
-
-            </div>
+            }
 
         </div>
 
