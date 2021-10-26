@@ -100,7 +100,6 @@ const getVideogame = async (req, res, next) => {
         .catch(err => res.status(401).send({data: err}))
 
     } else {
-        // obtener imagen nombre generos
         
         let allGames = [];
 
@@ -131,23 +130,38 @@ const getVideogame = async (req, res, next) => {
             
         }
 
-        let gameDb = await Videogame.findAll({
-
-            include:{
-
-                model: Genres,
-                attributes: ['name'],
-                through: {
-
-                    attributes: [],
-
-                },
-
-            }
-
-        });
+        let resGameDb = await Videogame.findAll({
         
-        return res.status(200).send(allGames.concat(gameDb));
+                include:{
+    
+                    model: Genres,
+                    attributes: ['name'],
+                    through: {
+    
+                        attributes: [],
+    
+                    },
+    
+                }
+        
+            }) 
+
+        let gameFind = resGameDb[0];
+
+        let genresOb = gameFind.genres.map(genres => genres.name);
+
+        allGames.push({  
+                    
+                    name: gameFind.name,
+                    description: gameFind.description,
+                    releaseDate: gameFind.released,
+                    rating: gameFind.rating,
+                    plataform: gameFind.platforms,
+                    genres: genresOb,
+
+                })
+        
+        return res.status(200).send(allGames);
 
     }
 
@@ -156,7 +170,7 @@ const getVideogame = async (req, res, next) => {
 };
 
 const getVideogameId = async (req, res, next) => {
-    // obtener imagen nombre generos descripcion fecha de lanzamiento rating plataformas
+    
     const { idVideogame } = req.params;
     
     if(!isNaN(idVideogame)){

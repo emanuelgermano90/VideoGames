@@ -15,6 +15,7 @@
     border-radius: 10px;
     margin: 0 10px;
     padding: 7px 0 0 0;
+    animation: moverDerecha 1s ease-in;
 
 }
 
@@ -22,5 +23,23 @@
 
     background: rgba(141, 2, 2, 0.85);
     cursor: pointer;
+
+}
+
+@keyframes moverDerecha {
+
+    0% {
+
+        opacity: 0;
+        transform: translateX(200px);
+
+    }
+
+    100% {
+
+        opacity: 1;
+        transform: translate(0);
+
+    }
 
 }

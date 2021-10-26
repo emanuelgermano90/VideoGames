@@ -75,7 +75,7 @@ export default function Home() {
 
         <div className='homeVG'>
 
-            <h1>Video Juegos</h1>
+            <h1>Video Games</h1>
 
             <Nav />
 
@@ -94,41 +94,41 @@ export default function Home() {
                     <option value='all' >All Genres</option>
                     {
 
-                        allGenres?.map( e => {
+                        allGenres?.map( (e, i) => {
                             return (
 
-                                <option value={e} >{e}</option>
+                                <option value={e} key={i} >{e}</option>
 
                             )
 
                         })
 
                     }
-                    <option value='existente' >Video Juegos Existente</option>
-                    <option value='agregados' >Video Juegos Agregados</option>
+                    <option value='existente' >Existing Video Game</option>
+                    <option value='agregados' >Video Game Added</option>
 
                 </select>
 
                 <select className='selectStyle' onChange={e => handleSort(e)} >
 
-                    <option value='alfa' >Alfabeticamente</option>
+                    <option value='alfa' >Alphabetically</option>
                     <option value='rating' >Rating</option>
 
                 </select>
 
-                <button className='buttomHome' onClick={e => handleClick(e)} >Actualizar Lista</button>
+                <button className='buttomHome' onClick={e => handleClick(e)} >Update List</button>
 
             </div>
             
             <div>
                 
-                <Paginado videogameForPage={videogameForPage} allVideoGames={allVideoGames.length} pagination={pagination} />
+                <Paginado videogameForPage={videogameForPage} allVideoGames={allVideoGames.length} pagination={pagination} key={videogameForPage} />
 
             </div>
 
             {
 
-                allVideoGames.length === 0 ? <img className='imgLoading' src={loading} /> :
+                allVideoGames.length === 0 ? <img className='imgLoading' src={loading} alt='imagen loading' /> :
 
                 <div className='listadoVG'>
 
@@ -151,38 +151,20 @@ export default function Home() {
 
                             })
 
-                            if(allVideoGames.length === 0) {
+                            return (
 
-                                return (
-
-                                    <div className='imgContent'>
+                                <div className='imgContent' key={e.id} >
+                                    
+                                    <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} key={e.id} >
                                         
-                                        <h1>hola</h1>
+                                        <Card img={e.image?e.image:sin_img} name={e.name} genres={genDis.join(' ')} key={e.id} />
 
-                                    </div>
+                                    </Link>
 
-                                )
+                                </div>
 
-                            } else {
-
-                                return (
-
-                                    <div className='imgContent'>
-                                        
-                                        <Link to={`/home/${e.id}`} onClick={() => dispatch(getGamesId(e.id))} >
-                                            
-                                            <Card img={e.image?e.image:sin_img} name={e.name} genres={genDis.join(' ')} key={e.id} />
-
-                                        </Link>
-
-                                    </div>
-
-                                )
-
-                            }
+                            )
                             
-                            
-
                         })
 
                     }

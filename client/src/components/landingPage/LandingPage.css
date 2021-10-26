@@ -11,6 +11,7 @@ h1 {
 .h1Landing {
 
     margin: 30px auto;
+    animation: moverIzquierda 1.5s ease-in;
 
 }
 
@@ -22,6 +23,7 @@ h1 {
     height: 50px;
     font-size: 30px;
     border: 0;
+    animation: moverDerecha 1.5s ease-in;
 
 }
 
@@ -31,4 +33,40 @@ h1 {
     border-bottom: 1px solid red;
     cursor: pointer;
     
+}
+
+@keyframes moverDerecha {
+
+    0% {
+
+        opacity: 0;
+        transform: translateX(200px);
+
+    }
+
+    100% {
+
+        opacity: 1;
+        transform: translate(0);
+
+    }
+
+}
+
+@keyframes moverIzquierda {
+
+    0% {
+
+        opacity: 0;
+        transform: translateX(-200px);
+
+    }
+
+    100% {
+
+        opacity: 1;
+        transform: translate(0);
+
+    }
+
 }

@@ -10,9 +10,9 @@ export default function Nav() {
 			
 			<ul>
 				
-				<Link to='/home' ><li>Home</li></Link>
+				<Link className='liNav' to='/home' ><li>Home</li></Link>
 
-				<Link to='/createVideoGame' ><li>Create Video Games</li></Link>
+				<Link className='liNav' to='/createVideoGame' ><li>Create Video Games</li></Link>
 
 			</ul>
 

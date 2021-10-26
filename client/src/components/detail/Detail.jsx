@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Nav from '../nav/Nav'
+import sin_img from "../../images/Sin_datos.jpg";
 import './Detail.css';
 
 export default function Detail() {
@@ -19,7 +20,7 @@ export default function Detail() {
 
                     <h1>{name}</h1>
 
-                    <img className='imgDetail' src={image} alt='imagen de muestra' />
+                    <img className='imgDetail' src={image ? image : sin_img} alt='imagen de muestra' />
 
                     <div className='textDetail' >
 

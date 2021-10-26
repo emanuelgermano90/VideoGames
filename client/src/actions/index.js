@@ -19,7 +19,12 @@ export function getListVideogames(){
                             type: GET_GAMES,
                             payload: respuesta.data
 
-                        }));
+                        }))
+                        .catch(e => {
+                            
+                            alert('err: ' + e)
+
+                        })
 
     }
 
@@ -62,11 +67,16 @@ export function getVideogame(name) {
 
         return await axios(`http://localhost:3001/videogames?name=${name}`)
                         .then(game => dispatch({
-
+                        
                             type: GET_GAMES_NAME,
                             payload: game.data
 
                         }))
+                        .catch(e => {
+
+                            alert('videogame not found')
+
+                        })
 
     }
 
@@ -77,6 +87,11 @@ export function postGames(payload) {
     return async function(dispatch) {
 
         return await axios.post(`http://localhost:3001/videogame`,payload)
+                        .catch(e => {
+                            
+                            alert('err: ' + e)
+
+                        })
 
     }
 

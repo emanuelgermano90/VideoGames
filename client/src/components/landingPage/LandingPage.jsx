@@ -8,11 +8,11 @@ export default function LandingPage(){
 
         <div>
 
-            <h1 className='h1Landing' >Bienvenidos</h1>
+            <h1 className='h1Landing' >Welcome</h1>
 
             <Link to='/home'>
 
-                <button className='butLanding'>Ingresar</button>
+                <button className='butLanding'>Get Into</button>
 
             </Link>
 

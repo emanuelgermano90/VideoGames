@@ -133,7 +133,7 @@ export default function CreateVideoGame() {
 
 				...input,
 
-				genres: input.genres.filter((el,i) => el != e)
+				genres: input.genres.filter((el,i) => el !== e)
 
 			})
 
@@ -143,7 +143,7 @@ export default function CreateVideoGame() {
 
 				...input,
 
-				platforms: input.platforms.filter((el,i) => el != e)
+				platforms: input.platforms.filter((el,i) => el !== e)
 
 			})
 
