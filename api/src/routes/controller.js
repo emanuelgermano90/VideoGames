@@ -10,21 +10,74 @@ const getVideogame = async (req, res, next) => {
     if(name) {
 
         await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}`)
-        .then(game => {
+        .then(async game => {
+
+            let resGameDb = await Videogame.findAll({
+        
+                where: {
+                    name: name
+                },
+    
+                include:{
+    
+                    model: Genres,
+                    attributes: ['name'],
+                    through: {
+    
+                        attributes: [],
+    
+                    },
+    
+                }
+        
+            }) 
+            
+            let gameFind = resGameDb[0];
+            
+            let genresOb = gameFind?.genres.map(genres => genres.name);
+            
+            let gameDbOb = {  
+                    
+                    name: gameFind?.name,
+                    description: gameFind?.description,
+                    releaseDate: gameFind?.released,
+                    rating: gameFind?.rating,
+                    plataform: gameFind?.platforms,
+                    genres: genresOb,
+
+                }
+
 
             let listGame = [];
 
-            if(game.data.results.length === 0) return res.status(404).send({data: 'video game not found'}); // si el length es 0 es porque no existe ese nombre
+            if(game.data.results.length === 0 && gameDbOb.name === undefined) return res.status(404).send({data: 'video game not found'}); // si el length es 0 es porque no existe ese nombre
 
-            for (let i = 0; i < 15; i++) {
-
-                const element = game.data.results[i];
-
-                listGame.push(element);
-                
-            }
-
+            
             let gameName = [];
+
+            if(gameDbOb.name != undefined) {  //gameDbOb.name === undefined boolean
+
+                gameName.push(gameDbOb)
+
+                for (let i = 0; i < 14; i++) {
+
+                    const element = game.data.results[i];
+                    
+                    listGame.push(element);
+                    
+                }
+
+            } else {
+
+                for (let i = 0; i < 15; i++) {
+
+                    const element = game.data.results[i];
+                    
+                    listGame.push(element);
+                    
+                }
+
+            }
 
             listGame.forEach(e => {
 
@@ -105,7 +158,7 @@ const getVideogame = async (req, res, next) => {
 const getVideogameId = async (req, res, next) => {
     // obtener imagen nombre generos descripcion fecha de lanzamiento rating plataformas
     const { idVideogame } = req.params;
-
+    
     if(!isNaN(idVideogame)){
 
         await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`)
@@ -116,7 +169,7 @@ const getVideogameId = async (req, res, next) => {
                 let genresOb = results.genres.map(genres => genres.name);
                 
                 let platOb = results.platforms.map(plat => plat.platform.name);
-
+                
                 return res.status(200).send({  
                     
                     name: results.name,
@@ -134,23 +187,40 @@ const getVideogameId = async (req, res, next) => {
 
     } else {
 
-        // falta hacer el codigo para traer los datos de un video game buscado por id en la BD y por nombre
-
-        let gameDb = await Videogame.findAll({
-
-            include:{
-
-                model: Genres,
-                attributes: ['name'],
-                through: {
-
-                    attributes: [],
-
+        let resGameDb = await Videogame.findAll({
+        
+                where: {
+                    id: idVideogame
                 },
+    
+                include:{
+    
+                    model: Genres,
+                    attributes: ['name'],
+                    through: {
+    
+                        attributes: [],
+    
+                    },
+    
+                }
+        
+            }) 
 
-            }
+        let gameFind = resGameDb[0];
 
-        });
+        let genresOb = gameFind.genres.map(genres => genres.name);
+
+        return res.status(200).send({  
+                    
+                    name: gameFind.name,
+                    description: gameFind.description,
+                    releaseDate: gameFind.released,
+                    rating: gameFind.rating,
+                    plataform: gameFind.platforms,
+                    genres: genresOb,
+
+                });
 
     }
     
@@ -177,23 +247,23 @@ const getGenres = async (req, res, next) => {
 
                         let listGenDb = genderDb.map(g => g.name);
                         
-                        res.status(200).json(listGenDb);
+                        return res.status(200).json(listGenDb);
 
                 });
 
             })
             .catch(err => {
 
-                res.sendStatus(400);
+                return res.sendStatus(400);
 
             })
 
 };
 
 const postVideogame = async (req, res, next) => {
-    // nombre- descripcion- fecha de lanzamiento- rating- varios generos- varias plataformas
-    const { name, description, releaseDate, rating, platforms, genres } = req.body;
-    console.log({ name, description, releaseDate, rating, platforms, genres })
+    
+    const { name, description, releaseDate, rating, platforms, genres } = req.body
+    
     if(!name || !description || !releaseDate || !rating || !platforms || !genres) return res.status(401).send({error: 'there are empty fields'})
 
     let platformsStr = platforms.toString()

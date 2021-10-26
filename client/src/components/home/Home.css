@@ -53,7 +53,7 @@ select:focus {
 
 }
 
-button {
+.buttomHome {
 
     width: 150px;
     height: 35px;
@@ -65,7 +65,7 @@ button {
 
 }
 
-button:hover {
+.buttomHome:hover {
 
     background: rgba(194, 2, 2, 0.8);
 

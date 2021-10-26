@@ -116,7 +116,7 @@ export default function Home() {
 
                 </select>
 
-                <button onClick={e => handleClick(e)} >Actualizar Lista</button>
+                <button className='buttomHome' onClick={e => handleClick(e)} >Actualizar Lista</button>
 
             </div>
             

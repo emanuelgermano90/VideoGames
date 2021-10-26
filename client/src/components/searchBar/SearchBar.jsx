@@ -10,7 +10,7 @@ export default function SearchBar() {
 
     const handleSearch = (e) => {
 
-        setTxtSearch(e.target.value);
+        setTxtSearch(e.target.value.toLowerCase());
 
     }
 

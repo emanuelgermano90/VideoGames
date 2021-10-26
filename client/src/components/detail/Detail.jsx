@@ -25,7 +25,7 @@ export default function Detail() {
 
                         <h3 className='h3Detail' >Fecha de Lanzamiento: {releaseDate}</h3>
 
-                        <h3 className='h3Detail' >Genero: {genres}</h3>
+                        <h3 className='h3Detail' >Genero: {genres?.join(' ')}</h3>
 
                         <h3 className='h3Detail' >Clasificacion: {rating}</h3>
 
