@@ -8,9 +8,21 @@ export default function SearchBar() {
     const dispatch = useDispatch();
     const [txtSearch, setTxtSearch] = useState('');
 
+    const mayusStringP = (string) => {
+
+        let nomMin = string.toLowerCase()
+
+        let mayus = nomMin.charAt(0).toUpperCase();
+
+        let residuoString = nomMin.slice(1);
+        
+        return `${mayus}${residuoString}`
+
+    }
+
     const handleSearch = (e) => {
 
-        setTxtSearch(e.target.value.toLowerCase());
+        setTxtSearch(mayusStringP(e.target.value));
 
     }
 

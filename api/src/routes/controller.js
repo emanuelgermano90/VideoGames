@@ -38,6 +38,7 @@ const getVideogame = async (req, res, next) => {
             
             let gameDbOb = {  
                     
+                    id: gameFind?.id,
                     name: gameFind?.name,
                     description: gameFind?.description,
                     releaseDate: gameFind?.released,
@@ -55,7 +56,7 @@ const getVideogame = async (req, res, next) => {
             
             let gameName = [];
 
-            if(gameDbOb.name != undefined) {  //gameDbOb.name === undefined boolean
+            if(gameDbOb.name !== undefined) {
 
                 gameName.push(gameDbOb)
 
@@ -103,65 +104,78 @@ const getVideogame = async (req, res, next) => {
         
         let allGames = [];
 
-        for (let i = 1; i <= 5; i++) {
+        try {
 
-            await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`)
-                .then(obj => {
+            for (let i = 1; i <= 5; i++) {
 
-                    let results = obj.data.results;
+                await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`)
+                    .then(obj => {
 
-                    results.forEach(ele => {
+                        let results = obj.data.results;
 
-                        let genresOb = ele.genres.map(genres => genres.name);
+                        results.forEach(ele => {
+
+                            let genresOb = ele.genres.map(genres => genres.name);
+                            
+                            allGames.push({
                         
-                        allGames.push({
-                    
-                            id: ele.id,
-                            name: ele.name,
-                            image: ele.background_image,
-                            genres: genresOb,
-                            rating: ele.rating,
+                                id: ele.id,
+                                name: ele.name,
+                                image: ele.background_image,
+                                genres: genresOb,
+                                rating: ele.rating,
+                            })
+                        
                         })
-                    
+
                     })
+                    .catch(err => res.status(401).send({data: err}))
+                
+            }
 
-                })
-                .catch(err => res.status(401).send({data: err}))
+            let resGameDb = await Videogame.findAll({
             
+                    include:{
+        
+                        model: Genres,
+                        attributes: ['name'],
+                        through: {
+        
+                            attributes: [],
+        
+                        },
+        
+                    }
+            
+                }) 
+
+            if(resGameDb.length !== 0) {
+
+                let gameFind = resGameDb[0];
+            
+                let genresOb = gameFind.genres?.map(genres => genres.name);
+                
+                allGames.push({  
+
+                            id: gameFind.id,
+                            name: gameFind.name,
+                            description: gameFind.description,
+                            releaseDate: gameFind.releaseDate,
+                            rating: gameFind.rating,
+                            plataform: gameFind.platforms,
+                            genres: genresOb,
+
+                        })
+
+            }
+
+            return res.status(200).send(allGames);
+
+        } catch (e) {
+
+            console.log(e);
+
         }
-
-        let resGameDb = await Videogame.findAll({
-        
-                include:{
-    
-                    model: Genres,
-                    attributes: ['name'],
-                    through: {
-    
-                        attributes: [],
-    
-                    },
-    
-                }
-        
-            }) 
-
-        let gameFind = resGameDb[0];
-
-        let genresOb = gameFind.genres.map(genres => genres.name);
-
-        allGames.push({  
-                    
-                    name: gameFind.name,
-                    description: gameFind.description,
-                    releaseDate: gameFind.released,
-                    rating: gameFind.rating,
-                    plataform: gameFind.platforms,
-                    genres: genresOb,
-
-                })
-        
-        return res.status(200).send(allGames);
 
     }
 
@@ -229,7 +243,7 @@ const getVideogameId = async (req, res, next) => {
                     
                     name: gameFind.name,
                     description: gameFind.description,
-                    releaseDate: gameFind.released,
+                    releaseDate: gameFind.releaseDate,
                     rating: gameFind.rating,
                     plataform: gameFind.platforms,
                     genres: genresOb,
@@ -242,35 +256,38 @@ const getVideogameId = async (req, res, next) => {
 
 const getGenres = async (req, res, next) => {
 
-   await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
-            .then((gen) => {
+   try {
 
-                gen.data.results.forEach(async (g) => {
-                        
-                        let genderDb = await Genres.findOrCreate({  // -----------> agrego los generos a la base de datos
+        await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
+                .then((gen) => {
 
-                            where: { name: g.name }
-        
-                        });
+                    gen.data.results.forEach(async (g) => {
+                            
+                            let genderDb = await Genres.findOrCreate({  // -----------> agrego los generos a la base de datos
 
-                        genderDb = await Genres.findAll({  // -----------> traigo los generos de la base de datos
-
-                            attributes: ['name']
+                                where: { name: g.name }
             
-                        });
+                            });
 
-                        let listGenDb = genderDb.map(g => g.name);
-                        
-                        return res.status(200).json(listGenDb);
+                            genderDb = await Genres.findAll({  // -----------> traigo los generos de la base de datos
 
-                });
+                                attributes: ['name']
+                
+                            });
 
-            })
-            .catch(err => {
+                            let listGenDb = genderDb.map(g => g.name);
+                            
+                            return res.status(200).json(listGenDb);
 
-                return res.sendStatus(400);
+                    });
 
-            })
+                })
+
+   } catch (e) {
+
+        console.log(e)
+
+   }
 
 };
 

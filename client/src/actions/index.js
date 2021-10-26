@@ -20,11 +20,6 @@ export function getListVideogames(){
                             payload: respuesta.data
 
                         }))
-                        .catch(e => {
-                            
-                            alert('err: ' + e)
-
-                        })
 
     }
 
@@ -83,7 +78,7 @@ export function getVideogame(name) {
 }
 
 export function postGames(payload) {
-    console.log(payload)
+    
     return async function(dispatch) {
 
         return await axios.post(`http://localhost:3001/videogame`,payload)

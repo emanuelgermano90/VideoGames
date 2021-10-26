@@ -173,6 +173,12 @@ export default function Home() {
 
             }
 
+            <div>
+                
+                <Paginado videogameForPage={videogameForPage} allVideoGames={allVideoGames.length} pagination={pagination} key={videogameForPage} />
+
+            </div>
+
         </div>
 
     )

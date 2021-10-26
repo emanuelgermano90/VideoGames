@@ -21,7 +21,7 @@
 
 .numPagination:hover {
 
-    background: rgba(141, 2, 2, 0.85);
+    background: linear-gradient(rgba(255, 0, 0, 0.8), rgba(255, 153, 0, 0.8));
     cursor: pointer;
 
 }

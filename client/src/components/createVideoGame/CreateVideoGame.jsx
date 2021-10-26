@@ -25,15 +25,59 @@ export default function CreateVideoGame() {
 
 	}, [dispatch]);
 
+	const mayusStringP = (string) => {
+
+		let nomMin = string.toLowerCase()
+
+		let mayus = nomMin.charAt(0).toUpperCase();
+
+		let residuoString = nomMin.slice(1);
+		
+		return `${mayus}${residuoString}`
+
+	}
+
+	const compDate = (date) => {
+
+		let hoy = new Date();
+
+		let res1 = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+		if(date > res1) {
+
+			alert('La fecha debe ser menor o igual que el dia de hoy');
+
+			document.getElementById('releaseDate').value = res1;
+
+		}
+
+	}
+
 	const handleChange = (e) => {
 
-		setInput({
+		if(e.target.name === 'releaseDate') compDate(e.target.value)
 
-			...input,
+		if(e.target.name === 'name') {
 
-			[e.target.name] : e.target.value.toLowerCase()
+			setInput({
 
-		});
+				...input,
+
+				name : mayusStringP(e.target.value)
+
+			});
+
+		} else {
+
+			setInput({
+
+				...input,
+
+				[e.target.name] : e.target.value.toLowerCase()
+
+			});
+
+		}
 
 	}
 	

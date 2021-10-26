@@ -61,7 +61,7 @@ select:focus {
 
     width: 150px;
     height: 35px;
-    background: rgba(112, 3, 3, 0.8);
+    background: linear-gradient(rgba(255, 0, 0, 0.8), rgba(112, 3, 3, 0.8));
     font-weight: 600;
     color: white;
     border: 1px solid red;
@@ -71,16 +71,18 @@ select:focus {
 
 .buttomHome:hover {
 
-    background: rgba(194, 2, 2, 0.8);
+    background: linear-gradient(rgba(255, 0, 0, 0.8), rgba(255, 153, 0, 0.8));
+    cursor: pointer;
 
 }
 
 .imgLoading {
 
     width: 20%;
-    height: 200px;
+    height: 30%;
     border-radius: 30px;
     margin-top: 30px;
+    object-fit: cover;
 
 }
 
